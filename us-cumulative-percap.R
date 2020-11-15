@@ -12,7 +12,7 @@ if (file.exists("census-api-key.R")) {
   source("census-api-key.R")
 }
 
-covid_data_hash = "1ac567f9937adb6748907631743fa69f8e2b21d9"
+covid_data_hash = "637ce284ec22e39a043ee5c6082a62b065efa844"
 
 covid_data_url <- paste("https://github.com/CSSEGISandData/COVID-19/archive/", covid_data_hash, ".zip", sep="")
 covid_data_destfile <- paste("covid19-", covid_data_hash, ".zip", sep="")
@@ -53,7 +53,7 @@ for (i in out_dates) {
   llab = paste("Confirmed COVID-19 Cases Per 100k People (JHU CSSE / US ACS)", i)
   u_comb$percap <- u_comb[[i]] / (u_comb$estimate / 100000)
   img <- plot_usmap(regions = "counties", data = u_comb, values = "percap", size=0.0001) + 
-    scale_fill_continuous(low = "white", high = "red", name = llab, na.value="white", guide = guide_colourbar(barwidth = 15, barheight = 0.1, title.position = "top")) +
+    scale_fill_continuous(low = "white", high = "red", name = llab, na.value="white", guide = guide_colourbar(barwidth = 10, barheight = 0.1, title.position = "top"), limits=c(0,20000)) +
     theme(legend.position = "bottom", text = element_text(size = 4))
   ggsave(filename = paste(output_dir, "/", i, ".png", sep=""), plot=img,width=3,height=2.5,units="in",scale=1)
 }
