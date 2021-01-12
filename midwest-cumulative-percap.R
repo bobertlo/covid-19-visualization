@@ -43,7 +43,7 @@ us_pop$fips <- as.numeric(us_pop$GEOID)
 
 u_comb <- left_join(us_pop, u_cum, by = c("fips" = "fips"))
 
-output_dir = "us-cumulative-percap"
+output_dir = "midwest-cumulative-percap"
 unlink(output_dir, recursive=TRUE)
 dir.create(output_dir)
 
@@ -52,7 +52,7 @@ for (i in out_dates) {
   print(i)
   llab = paste("Confirmed COVID-19 Cases Per 100k People (JHU CSSE / US ACS)", i)
   u_comb$percap <- u_comb[[i]] / (u_comb$estimate / 100000)
-  img <- plot_usmap(regions = "counties", data = u_comb, values = "percap", size=0.06) + 
+  img <- plot_usmap(regions = "counties", data = u_comb, include = .midwest_region, values = "percap", size = 0.1) + 
     scale_fill_continuous(low = "white", high = "red", name = llab, na.value="white", guide = guide_colourbar(barwidth = 10, barheight = 0.1, title.position = "top"), limits=c(0,30000)) +
     theme(legend.position = "bottom", text = element_text(size = 4))
   ggsave(filename = paste(output_dir, "/", i, ".png", sep=""), plot=img,width=3,height=2.5,units="in",scale=1)
